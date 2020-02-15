@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
   title: '源码学习',
   description: 'Vue | React 源码学习',
