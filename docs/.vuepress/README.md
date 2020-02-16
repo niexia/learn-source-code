@@ -25,10 +25,5 @@ features:
 - title: 内置组件篇
   details: 学习 Vue 中内置组件的实现原理。
 
-footer: MIT Licensed | Copyright © 2019-present 难凉热血
+footer: MIT Licensed | Copyright © 2020-present 难凉热血
 ---
-
-<div class='footer' style='display:none'>
-  <span id='cnzz_stat_icon_1278573067'></span>
-</div> 
-<script type="text/javascript" src='https://v1.cnzz.com/z_stat.php?id=1278573067&online=1&show=line'></script>
