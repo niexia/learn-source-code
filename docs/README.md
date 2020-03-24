@@ -35,7 +35,7 @@ react 自己还没开始在工作中使用，看了文档，忘了差不多了..
 
 ### 学习安排
 
-主要按照下边这个过程进行学习，通过前面的数据驱动、组件和响应式可以了解 vue 是怎么工作的，接下来比较细化的去看对应功能和 API 的实现方式。
+看一个项目代码的时候，最好是能找到一条主线，先把大体流程结构摸清楚，再深入到细节。所以这里主要按照下边这个过程进行学习，通过前面的数据驱动、组件和响应式可以了解 vue 是怎么工作的，接下来比较细化的去看对应功能和 API 的实现方式。
 
 - 数据驱动：怎么由一个 vue 文件生产看到的页面？
 - 组件：vue 文档强调组件的重要性，那组件是什么？
@@ -55,4 +55,5 @@ react 自己还没开始在工作中使用，看了文档，忘了差不多了..
 - [Vue API](https://cn.vuejs.org/v2/api/)
 - [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)
 - [Vue.js 源码解析](https://github.com/answershuto/learnVue)
+- [Vue2.1.7源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/)
 - [逐行剖析 Vue.js 源码](https://github.com/NLRX-WJC/Learn-Vue-Source-Code)

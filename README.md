@@ -55,4 +55,5 @@ react 自己还没开始在工作中使用，看了文档，忘了差不多了..
 - [Vue API](https://cn.vuejs.org/v2/api/)
 - [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)
 - [Vue.js 源码解析](https://github.com/answershuto/learnVue)
+- [Vue2.1.7源码学习](http://hcysun.me/2017/03/03/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/)
 - [逐行剖析 Vue.js 源码](https://github.com/NLRX-WJC/Learn-Vue-Source-Code)
