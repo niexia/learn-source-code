@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   markdown: {
-    lineNumbers: true
+    lineNumbers: false
   },
   themeConfig: {
     repo: 'niexias/learn-source-code',
@@ -33,15 +33,12 @@ module.exports = {
     }],
     sidebarDepth: 2,
     sidebar: [{
-      title: "写在最前面",
-      collapsable: false,
-      children: [
-        ["start/", "写在最前面"]
-      ]
-    }, {
       title: "数据驱动",
       collapsable: false,
-      children: []
+      children: [
+        '/vue/instance/',
+        '/vue/instance/Vue是什么'
+      ]
     }, {
       title: "响应式",
       collapsable: false,
