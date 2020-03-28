@@ -37,7 +37,8 @@ module.exports = {
       collapsable: false,
       children: [
         '/vue/instance/',
-        '/vue/instance/Vue是什么'
+        '/vue/instance/Vue是什么',
+        '/vue/instance/newVue初始化'
       ]
     }, {
       title: "响应式",
@@ -68,7 +69,6 @@ module.exports = {
       title: "全局API篇",
       collapsable: false,
       children: [
-        ["globalAPI/", "全局API分析"]
       ]
     }, {
       title: "过滤器篇",
