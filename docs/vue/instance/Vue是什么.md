@@ -348,21 +348,21 @@ Vue.prototype.$forceUpdate = function () {}
 Vue.prototype.$destroy = function () {}
 
 // renderMixin(Vue)
+Vue.prototype._s = _toString
+Vue.prototype._v = createTextVNode
+Vue.prototype._n = toNumber
+Vue.prototype._e = createEmptyVNode
+Vue.prototype._q = looseEqual
+Vue.prototype._i = looseIndexOf
+Vue.prototype._m = function(){}
+Vue.prototype._o = function(){}
+Vue.prototype._f = function resolveFilter (id) {}
+Vue.prototype._l = function(){}
+Vue.prototype._t = function(){}
+Vue.prototype._b = function(){}
+Vue.prototype._k = function(){}
 Vue.prototype.$nextTick = function (fn: Function) {}
 Vue.prototype._render = function (): VNode {}
-// Vue.prototype._s = _toString
-// Vue.prototype._v = createTextVNode
-// Vue.prototype._n = toNumber
-// Vue.prototype._e = createEmptyVNode
-// Vue.prototype._q = looseEqual
-// Vue.prototype._i = looseIndexOf
-// Vue.prototype._m = function(){}
-// Vue.prototype._o = function(){}
-// Vue.prototype._f = function resolveFilter (id) {}
-// Vue.prototype._l = function(){}
-// Vue.prototype._t = function(){}
-// Vue.prototype._b = function(){}
-// Vue.prototype._k = function(){}
 ```
 
 ### 2. 在 Vue 构造函数上挂载静态属性和方法
