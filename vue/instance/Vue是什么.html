@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Vue 是什么 | 源码学习</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/learn-source-code/favicon.ico">
+    <meta name="description" content="Vue | React 源码学习">
+    
+    <link rel="preload" href="/learn-source-code/assets/css/0.styles.199199a7.css" as="style"><link rel="preload" href="/learn-source-code/assets/js/app.5e38ded0.js" as="script"><link rel="preload" href="/learn-source-code/assets/js/2.d01425c9.js" as="script"><link rel="preload" href="/learn-source-code/assets/js/13.b32bf10d.js" as="script"><link rel="preload" href="/learn-source-code/assets/js/4.f0684e3b.js" as="script"><link rel="prefetch" href="/learn-source-code/assets/js/10.5c541b7c.js"><link rel="prefetch" href="/learn-source-code/assets/js/11.fed2d000.js"><link rel="prefetch" href="/learn-source-code/assets/js/12.21e55e11.js"><link rel="prefetch" href="/learn-source-code/assets/js/14.8a063a1a.js"><link rel="prefetch" href="/learn-source-code/assets/js/15.9b7e61b0.js"><link rel="prefetch" href="/learn-source-code/assets/js/3.101bc707.js"><link rel="prefetch" href="/learn-source-code/assets/js/5.fe4dfb56.js"><link rel="prefetch" href="/learn-source-code/assets/js/6.b6b15352.js"><link rel="prefetch" href="/learn-source-code/assets/js/7.c04e8c3d.js"><link rel="prefetch" href="/learn-source-code/assets/js/8.602c3eb7.js"><link rel="prefetch" href="/learn-source-code/assets/js/9.0ed41f5e.js">
+    <link rel="stylesheet" href="/learn-source-code/assets/css/0.styles.199199a7.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/learn-source-code/" class="home-link router-link-active"><!----> <span class="site-name">源码学习</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/learn-source-code/vue/" class="nav-link router-link-active">
+  Vue 2
+</a></div><div class="nav-item"><a href="/learn-source-code/vue-next/" class="nav-link">
+  Vue 3
+</a></div><div class="nav-item"><a href="/learn-source-code/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="https://niexia.github.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  个人博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/niexia/learn-source-code" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/learn-source-code/vue/" class="nav-link router-link-active">
+  Vue 2
+</a></div><div class="nav-item"><a href="/learn-source-code/vue-next/" class="nav-link">
+  Vue 3
+</a></div><div class="nav-item"><a href="/learn-source-code/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="https://niexia.github.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  个人博客
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/niexia/learn-source-code" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>数据驱动</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/learn-source-code/vue/instance/" aria-current="page" class="sidebar-link">从一个实例开始</a></li><li><a href="/learn-source-code/vue/instance/Vue是什么.html" class="active sidebar-link">Vue 是什么</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#从-scripts-开始" class="sidebar-link">从 scripts 开始</a></li><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#入口文件" class="sidebar-link">入口文件</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#_1-构造函数的定义和挂载原型方法" class="sidebar-link">1. 构造函数的定义和挂载原型方法</a></li><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#_2-在-vue-构造函数上挂载静态属性和方法" class="sidebar-link">2. 在 Vue 构造函数上挂载静态属性和方法</a></li><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#_3-安装平台平台相关的指令、组件并定义-mount" class="sidebar-link">3. 安装平台平台相关的指令、组件并定义 $mount</a></li><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#_4-缓存原来的-mount-编译生成-render-函数" class="sidebar-link">4. 缓存原来的 $mount，编译生成 render 函数</a></li></ul></li><li class="sidebar-sub-header"><a href="/learn-source-code/vue/instance/Vue是什么.html#总结" class="sidebar-link">总结</a></li></ul></li><li><a href="/learn-source-code/vue/instance/newVue初始化.html" class="sidebar-link">new Vue 初始化</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>响应式</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>虚拟DOM</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>模板编译篇</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>生命周期篇</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>实例方法篇</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>全局API篇</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>过滤器篇</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>指令篇</span> <!----></p> <!----></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>内置组件篇</span> <!----></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="vue-是什么"><a href="#vue-是什么" class="header-anchor">#</a> Vue 是什么</h1> <p>前面的例子中，使用 <code>new</code> 操作符来调用 <code>Vue</code>，也就是说 <code>Vue</code> 应该是一个构造函数。所以现在就先找到它。</p> <p>那怎么找到它？</p> <h2 id="从-scripts-开始"><a href="#从-scripts-开始" class="header-anchor">#</a> 从 scripts 开始</h2> <p>在看源码之前，第一个想到的应该是 package.json 文件，这里面包含了这个代码仓库关键的信息。可以看 scripts 部分包含的指令，就类似一般工作项目中的 <code>npm run dev</code> 或者 <code>npm run build</code> 一样，可以了解源码是如何开始运行的。这里看一下 <code>npm run dev</code></p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token string">&quot;dev&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;rollup -w -c scripts/config.js --environment TARGET:web-full-dev&quot;</span>,
+</code></pre></div><p>可以看到 Vue 是使用 roolup 来进行打包的。<code>-w</code> 就是 watch，<code>-c</code> 就是指定配置文件为 <code>scripts/config.js</code>，最后将 <code>TARGET</code> 得值设置为 <code>web-full-dev</code>。打开 <code>build/config.js</code> 看看：</p> <p><strong>build/config.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 引入依赖，定义 banner，alias</span>
+<span class="token comment">// ...</span>
+
+<span class="token comment">// build 配置对象</span>
+<span class="token keyword">const</span> builds <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">//...</span>
+  <span class="token comment">// runtime-only build (Browser)</span>
+  <span class="token string">'web-runtime-dev'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.runtime.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+    env<span class="token operator">:</span> <span class="token string">'development'</span><span class="token punctuation">,</span>
+    banner
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// runtime-only production build (Browser)</span>
+  <span class="token string">'web-runtime-prod'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.runtime.min.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+    env<span class="token operator">:</span> <span class="token string">'production'</span><span class="token punctuation">,</span>
+    banner
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// Runtime+compiler development build (Browser)</span>
+  <span class="token string">'web-full-dev'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime-with-compiler.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+    env<span class="token operator">:</span> <span class="token string">'development'</span><span class="token punctuation">,</span>
+    alias<span class="token operator">:</span> <span class="token punctuation">{</span> he<span class="token operator">:</span> <span class="token string">'./entity-decoder'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    banner
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// Runtime+compiler production build  (Browser)</span>
+  <span class="token string">'web-full-prod'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime-with-compiler.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.min.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+    env<span class="token operator">:</span> <span class="token string">'production'</span><span class="token punctuation">,</span>
+    alias<span class="token operator">:</span> <span class="token punctuation">{</span> he<span class="token operator">:</span> <span class="token string">'./entity-decoder'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    banner
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 生成配置的方法</span>
+<span class="token keyword">function</span> <span class="token function">genConfig</span> <span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> opts <span class="token operator">=</span> builds<span class="token punctuation">[</span>name<span class="token punctuation">]</span>
+  <span class="token keyword">const</span> config <span class="token operator">=</span> <span class="token punctuation">{</span>
+    input<span class="token operator">:</span> opts<span class="token punctuation">.</span>entry<span class="token punctuation">,</span>
+    external<span class="token operator">:</span> opts<span class="token punctuation">.</span>external<span class="token punctuation">,</span>
+    plugins<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token function">flow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token function">alias</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> aliases<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>alias<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>opts<span class="token punctuation">.</span>plugins <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    output<span class="token operator">:</span> <span class="token punctuation">{</span>
+      file<span class="token operator">:</span> opts<span class="token punctuation">.</span>dest<span class="token punctuation">,</span>
+      format<span class="token operator">:</span> opts<span class="token punctuation">.</span>format<span class="token punctuation">,</span>
+      banner<span class="token operator">:</span> opts<span class="token punctuation">.</span>banner<span class="token punctuation">,</span>
+      name<span class="token operator">:</span> opts<span class="token punctuation">.</span>moduleName <span class="token operator">||</span> <span class="token string">'Vue'</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">onwarn</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">msg<span class="token punctuation">,</span> warn</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">Circular</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">warn</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// ...</span>
+  <span class="token keyword">return</span> config
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 判断构建的目标并生成配置文件</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">TARGET</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token function">genConfig</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">TARGET</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+  exports<span class="token punctuation">.</span>getBuild <span class="token operator">=</span> genConfig
+  exports<span class="token punctuation">.</span><span class="token function-variable function">getAllBuilds</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>builds<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>genConfig<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>执行 <code>npm run dev</code> 的时候，将 <code>TARGET</code> 设置为 <code>web-full-dev</code>，所以会执行</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token function">genConfig</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">TARGET</span><span class="token punctuation">)</span>
+</code></pre></div><p>相当于</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token function">genConfig</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime-with-compiler.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+  env<span class="token operator">:</span> <span class="token string">'development'</span><span class="token punctuation">,</span>
+  alias<span class="token operator">:</span> <span class="token punctuation">{</span> he<span class="token operator">:</span> <span class="token string">'./entity-decoder'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  banner
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p>最终 <code>genConfig</code> 会返回一个 <code>config</code> 对象，这个 <code>config</code> 对象就是 roolup 的配置对象。可以看到入口文件就是 <code>entry</code> 指向的 <code>web/entry-runtime-with-compiler.js</code>。</p> <h2 id="入口文件"><a href="#入口文件" class="header-anchor">#</a> 入口文件</h2> <p>打开入口文件：</p> <p><strong>web/entry-runtime-with-compiler.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> config <span class="token keyword">from</span> <span class="token string">'core/config'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> warn<span class="token punctuation">,</span> cached <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> mark<span class="token punctuation">,</span> measure <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/perf'</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'./runtime/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> query <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./util/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> compileToFunctions <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./compiler/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> shouldDecodeNewlines<span class="token punctuation">,</span> shouldDecodeNewlinesForHref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./util/compat'</span>
+
+<span class="token keyword">const</span> idToTemplate <span class="token operator">=</span> <span class="token function">cached</span><span class="token punctuation">(</span><span class="token parameter">id</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> el <span class="token operator">=</span> <span class="token function">query</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> el <span class="token operator">&amp;&amp;</span> el<span class="token punctuation">.</span>innerHTML
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> mount <span class="token operator">=</span> <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$mount
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$mount</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>
+  <span class="token parameter">el<span class="token operator">?</span><span class="token operator">:</span> string <span class="token operator">|</span> Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token operator">:</span> boolean</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+  el <span class="token operator">=</span> el <span class="token operator">&amp;&amp;</span> <span class="token function">query</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>可以看到，下面这行代码，现在主要是找 “Vue”！其他的先暂时跳过，所以接下来去看 <code>./runtime/index</code>。</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'./runtime/index'</span>
+</code></pre></div><p><strong>web/runtime/index.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">/* @flow */</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'core/index'</span>
+
+<span class="token comment">// ...</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Vue
+</code></pre></div><p>依照上面的思路，接着打开 <code>core/index</code></p> <p><strong>core/index.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'./instance/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initGlobalAPI <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./global-api/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> isServerRendering <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/env'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> FunctionalRenderContext <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/vdom/create-functional-component'</span>
+
+<span class="token function">initGlobalAPI</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+<span class="token comment">// ...</span>
+</code></pre></div><p>依可以知道 Vue 构造函数应该在 <code>src/core/instance/index.js</code> 文件中，所以整个找 Vue 构造函数的过程是这样的：</p> <ol><li><code>npm run dev</code> 确定入口文件 web/entry-runtime-with-compiler.js</li> <li>找到入口文件并发现是在 web/runtime/index.js</li> <li>打开 web/runtime/index.js 发现其实是在 core/index.js</li> <li>最后找到了 instance/index.js</li></ol> <p>接下来，我们再从后往回看！每一步都做了什么。</p> <h3 id="_1-构造函数的定义和挂载原型方法"><a href="#_1-构造函数的定义和挂载原型方法" class="header-anchor">#</a> 1. 构造函数的定义和挂载原型方法</h3> <p><strong>instance/index.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> initMixin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./init'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> stateMixin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./state'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> renderMixin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./render'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> eventsMixin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./events'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> lifecycleMixin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./lifecycle'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> warn <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../util/index'</span>
+
+<span class="token keyword">function</span> <span class="token function">Vue</span> <span class="token punctuation">(</span><span class="token parameter">options</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 校验必须使用 new 操作符来调用函数</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span>
+    <span class="token operator">!</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token keyword">instanceof</span> <span class="token class-name">Vue</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">'Vue is a constructor and should be called with the `new` keyword'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">_init</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">initMixin</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+<span class="token function">stateMixin</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+<span class="token function">eventsMixin</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+<span class="token function">lifecycleMixin</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+<span class="token function">renderMixin</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Vue
+</code></pre></div><p>在这里面引入相关依赖，然后定义了构造函数 Vue，然后以 Vue 为参数调用了 5 个方法。打开这些方法对应的文件，看看主要是做什么用的。</p> <ul><li><strong><code>initMixin</code></strong></li></ul> <p><strong>instance/init.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">initMixin</span> <span class="token punctuation">(</span><span class="token parameter">Vue<span class="token operator">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">&gt;</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_init</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">options<span class="token operator">?</span><span class="token operator">:</span> Object</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><strong><code>stateMixin</code></strong></li></ul> <p><strong>instance/state.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">stateMixin</span> <span class="token punctuation">(</span><span class="token parameter">Vue<span class="token operator">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">&gt;</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// flow somehow has problems with directly declared definition object</span>
+  <span class="token comment">// when using Object.defineProperty, so we have to procedurally build up</span>
+  <span class="token comment">// the object here.</span>
+  <span class="token keyword">const</span> dataDef <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  dataDef<span class="token punctuation">.</span><span class="token function-variable function">get</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_data <span class="token punctuation">}</span>
+  <span class="token keyword">const</span> propsDef <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  propsDef<span class="token punctuation">.</span><span class="token function-variable function">get</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_props <span class="token punctuation">}</span>
+  <span class="token comment">// ...</span>
+  Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span><span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">'$data'</span><span class="token punctuation">,</span> dataDef<span class="token punctuation">)</span>
+  Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span><span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">'$props'</span><span class="token punctuation">,</span> propsDef<span class="token punctuation">)</span>
+
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$set <span class="token operator">=</span> <span class="token keyword">set</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$<span class="token keyword">delete</span> <span class="token operator">=</span> del
+
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$watch</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>
+    <span class="token parameter">expOrFn<span class="token operator">:</span> string <span class="token operator">|</span> Function<span class="token punctuation">,</span>
+    cb<span class="token operator">:</span> any<span class="token punctuation">,</span>
+    options<span class="token operator">?</span><span class="token operator">:</span> Object</span>
+  <span class="token punctuation">)</span><span class="token operator">:</span> Function <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+</code></pre></div><ul><li><strong><code>eventsMixin</code></strong></li></ul> <p><strong>instance/events.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">eventsMixin</span> <span class="token punctuation">(</span><span class="token parameter">Vue<span class="token operator">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">&gt;</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> hookRE <span class="token operator">=</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^hook:</span><span class="token regex-delimiter">/</span></span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$on</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> string <span class="token operator">|</span> Array<span class="token operator">&lt;</span>string<span class="token operator">&gt;</span><span class="token punctuation">,</span> fn<span class="token operator">:</span> Function</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$once</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> string<span class="token punctuation">,</span> fn<span class="token operator">:</span> Function</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$off</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">?</span><span class="token operator">:</span> string <span class="token operator">|</span> Array<span class="token operator">&lt;</span>string<span class="token operator">&gt;</span><span class="token punctuation">,</span> fn<span class="token operator">?</span><span class="token operator">:</span> Function</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$emit</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> string</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><strong><code>lifecycleMixin</code></strong></li></ul> <p><strong>instance/lefecycle.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">lifecycleMixin</span> <span class="token punctuation">(</span><span class="token parameter">Vue<span class="token operator">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">&gt;</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_update</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">vnode<span class="token operator">:</span> VNode<span class="token punctuation">,</span> hydrating<span class="token operator">?</span><span class="token operator">:</span> boolean</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$forceUpdate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$destroy</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li><strong><code>renderMixin</code></strong></li></ul> <p><strong>instance/render.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">renderMixin</span> <span class="token punctuation">(</span><span class="token parameter">Vue<span class="token operator">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">&gt;</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// install runtime convenience helpers</span>
+  <span class="token function">installRenderHelpers</span><span class="token punctuation">(</span><span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>
+
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$nextTick</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">fn<span class="token operator">:</span> Function</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">nextTick</span><span class="token punctuation">(</span>fn<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_render</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> VNode <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>可以法相，这些方法的作用，就是在 Vue 的圆形 <code>prototype</code> 上挂载方法和属性，经过这 5 个方法之后，Vue 的 <code>prototype</code> 变成了这样：</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// initMixin(Vue)</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_init</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">options<span class="token operator">?</span><span class="token operator">:</span> Object</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token comment">// stateMixin(Vue)</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$data
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$props
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$set <span class="token operator">=</span> <span class="token keyword">set</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$<span class="token keyword">delete</span> <span class="token operator">=</span> del
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$watch</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token comment">// eventsMixin(Vue) </span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$on</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> string<span class="token punctuation">,</span> fn<span class="token operator">:</span> Function</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$once</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> string<span class="token punctuation">,</span> fn<span class="token operator">:</span> Function</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$off</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">?</span><span class="token operator">:</span> string<span class="token punctuation">,</span> fn<span class="token operator">?</span><span class="token operator">:</span> Function</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$emit</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> string</span><span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token comment">// lifecycleMixin(Vue)</span>
+<span class="token comment">// Vue.prototype._mount = function(){}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_update</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">vnode<span class="token operator">:</span> VNode<span class="token punctuation">,</span> hydrating<span class="token operator">?</span><span class="token operator">:</span> boolean</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token comment">// Vue.prototype._updateFromParent = function(){}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$forceUpdate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$destroy</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token comment">// renderMixin(Vue)</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_s <span class="token operator">=</span> _toString
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_v <span class="token operator">=</span> createTextVNode
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_n <span class="token operator">=</span> toNumber
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_e <span class="token operator">=</span> createEmptyVNode
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_q <span class="token operator">=</span> looseEqual
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_i <span class="token operator">=</span> looseIndexOf
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_m</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_o</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_f</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">resolveFilter</span> <span class="token punctuation">(</span><span class="token parameter">id</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_l</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_t</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_b</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_k</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$nextTick</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">fn<span class="token operator">:</span> Function</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">_render</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> VNode <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div><h3 id="_2-在-vue-构造函数上挂载静态属性和方法"><a href="#_2-在-vue-构造函数上挂载静态属性和方法" class="header-anchor">#</a> 2. 在 Vue 构造函数上挂载静态属性和方法</h3> <p><strong>core/index.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'./instance/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initGlobalAPI <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./global-api/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> isServerRendering <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/env'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> FunctionalRenderContext <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/vdom/create-functional-component'</span>
+
+<span class="token function">initGlobalAPI</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+
+Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span><span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">'$isServer'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  get<span class="token operator">:</span> isServerRendering
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span><span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">'$ssrContext'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token function">get</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">/* istanbul ignore next */</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$vnode <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$vnode<span class="token punctuation">.</span>ssrContext
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment">// expose FunctionalRenderContext for ssr runtime helper installation</span>
+Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>Vue<span class="token punctuation">,</span> <span class="token string">'FunctionalRenderContext'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  value<span class="token operator">:</span> FunctionalRenderContext
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+Vue<span class="token punctuation">.</span>version <span class="token operator">=</span> <span class="token string">'__VERSION__'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Vue
+</code></pre></div><p>这个方法也比较简单，导入已经挂载在圆形上挂载了方法和属性后的 Vue，然后执行 <code>initGlobalAPI(Vue)</code>，然后在 Vue.prototype 上挂载了 <code>$isServer</code> 和 <code>$ssrContext</code>，最后在 Vue 上挂载了 <code>version</code> 属性。</p> <p>这里主要看看 <code>initGlobalAPI</code> 的内容</p> <p><strong>core/global-api/index.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">/* @flow */</span>
+
+<span class="token keyword">import</span> config <span class="token keyword">from</span> <span class="token string">'../config'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initUse <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./use'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initMixin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./mixin'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initExtend <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./extend'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initAssetRegisters <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./assets'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> set<span class="token punctuation">,</span> del <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../observer/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token constant">ASSET_TYPES</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'shared/constants'</span>
+<span class="token keyword">import</span> builtInComponents <span class="token keyword">from</span> <span class="token string">'../components/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> observe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/observer/index'</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span>
+  warn<span class="token punctuation">,</span>
+  extend<span class="token punctuation">,</span>
+  nextTick<span class="token punctuation">,</span>
+  mergeOptions<span class="token punctuation">,</span>
+  defineReactive
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../util/index'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">initGlobalAPI</span> <span class="token punctuation">(</span><span class="token parameter">Vue<span class="token operator">:</span> GlobalAPI</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// config</span>
+  <span class="token keyword">const</span> configDef <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  configDef<span class="token punctuation">.</span><span class="token function-variable function">get</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> config
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    configDef<span class="token punctuation">.</span><span class="token function-variable function">set</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token function">warn</span><span class="token punctuation">(</span>
+        <span class="token string">'Do not replace the Vue.config object, set individual fields instead.'</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>Vue<span class="token punctuation">,</span> <span class="token string">'config'</span><span class="token punctuation">,</span> configDef<span class="token punctuation">)</span>
+
+  <span class="token comment">// exposed util methods.</span>
+  <span class="token comment">// NOTE: these are not considered part of the public API - avoid relying on</span>
+  <span class="token comment">// them unless you are aware of the risk.</span>
+  Vue<span class="token punctuation">.</span>util <span class="token operator">=</span> <span class="token punctuation">{</span>
+    warn<span class="token punctuation">,</span>
+    extend<span class="token punctuation">,</span>
+    mergeOptions<span class="token punctuation">,</span>
+    defineReactive
+  <span class="token punctuation">}</span>
+
+  Vue<span class="token punctuation">.</span>set <span class="token operator">=</span> <span class="token keyword">set</span>
+  Vue<span class="token punctuation">.</span>delete <span class="token operator">=</span> del
+  Vue<span class="token punctuation">.</span>nextTick <span class="token operator">=</span> nextTick
+
+  <span class="token comment">// 2.6 explicit observable API</span>
+  Vue<span class="token punctuation">.</span>observable <span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token constant">T</span><span class="token operator">&gt;</span><span class="token punctuation">(</span>obj<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token parameter"><span class="token constant">T</span></span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token function">observe</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> obj
+  <span class="token punctuation">}</span>
+
+  Vue<span class="token punctuation">.</span>options <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+  <span class="token constant">ASSET_TYPES</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">type</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    Vue<span class="token punctuation">.</span>options<span class="token punctuation">[</span>type <span class="token operator">+</span> <span class="token string">'s'</span><span class="token punctuation">]</span> <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// this is used to identify the &quot;base&quot; constructor to extend all plain-object</span>
+  <span class="token comment">// components with in Weex's multi-instance scenarios.</span>
+  Vue<span class="token punctuation">.</span>options<span class="token punctuation">.</span>_base <span class="token operator">=</span> Vue
+
+  <span class="token function">extend</span><span class="token punctuation">(</span>Vue<span class="token punctuation">.</span>options<span class="token punctuation">.</span>components<span class="token punctuation">,</span> builtInComponents<span class="token punctuation">)</span>
+
+  <span class="token function">initUse</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+  <span class="token function">initMixin</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+  <span class="token function">initExtend</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+  <span class="token function">initAssetRegisters</span><span class="token punctuation">(</span>Vue<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><strong>可以看到 <code>initGlobalAPI</code> 的作用是在 Vue 构造函数上挂载静态属性和方法。经过这部分之后，Vue 就会变成下面这个样子：</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// src/core/index.js </span>
+<span class="token comment">// src/core/global-api/index.js</span>
+Vue<span class="token punctuation">.</span>config
+Vue<span class="token punctuation">.</span>util <span class="token operator">=</span> util
+Vue<span class="token punctuation">.</span>set <span class="token operator">=</span> <span class="token keyword">set</span>
+Vue<span class="token punctuation">.</span>delete <span class="token operator">=</span> del
+Vue<span class="token punctuation">.</span>nextTick <span class="token operator">=</span> util<span class="token punctuation">.</span>nextTick
+Vue<span class="token punctuation">.</span>options <span class="token operator">=</span> <span class="token punctuation">{</span>
+  components<span class="token operator">:</span> <span class="token punctuation">{</span>
+    KeepAlive
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  directives<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  filters<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  _base<span class="token operator">:</span> Vue
+<span class="token punctuation">}</span>
+Vue<span class="token punctuation">.</span>use
+Vue<span class="token punctuation">.</span>mixin
+Vue<span class="token punctuation">.</span>cid <span class="token operator">=</span> <span class="token number">0</span>
+Vue<span class="token punctuation">.</span>extend
+Vue<span class="token punctuation">.</span><span class="token function-variable function">component</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+Vue<span class="token punctuation">.</span><span class="token function-variable function">directive</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+Vue<span class="token punctuation">.</span><span class="token function-variable function">filter</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$isServer
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$ssrContext
+Vue<span class="token punctuation">.</span>version <span class="token operator">=</span> <span class="token string">'__VERSION__'</span>
+</code></pre></div><p>下一个就是 <code>web/runtime/index.js</code>。</p> <h3 id="_3-安装平台平台相关的指令、组件并定义-mount"><a href="#_3-安装平台平台相关的指令、组件并定义-mount" class="header-anchor">#</a> 3. 安装平台平台相关的指令、组件并定义 $mount</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">/* @flow */</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'core/index'</span>
+<span class="token keyword">import</span> config <span class="token keyword">from</span> <span class="token string">'core/config'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> extend<span class="token punctuation">,</span> noop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'shared/util'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> mountComponent <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/instance/lifecycle'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> devtools<span class="token punctuation">,</span> inBrowser <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/index'</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span>
+  query<span class="token punctuation">,</span>
+  mustUseProp<span class="token punctuation">,</span>
+  isReservedTag<span class="token punctuation">,</span>
+  isReservedAttr<span class="token punctuation">,</span>
+  getTagNamespace<span class="token punctuation">,</span>
+  isUnknownElement
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'web/util/index'</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> patch <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./patch'</span>
+<span class="token keyword">import</span> platformDirectives <span class="token keyword">from</span> <span class="token string">'./directives/index'</span>
+<span class="token keyword">import</span> platformComponents <span class="token keyword">from</span> <span class="token string">'./components/index'</span>
+
+<span class="token comment">// install platform specific utils</span>
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>mustUseProp <span class="token operator">=</span> mustUseProp
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>isReservedTag <span class="token operator">=</span> isReservedTag
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>isReservedAttr <span class="token operator">=</span> isReservedAttr
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>getTagNamespace <span class="token operator">=</span> getTagNamespace
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>isUnknownElement <span class="token operator">=</span> isUnknownElement
+
+<span class="token comment">// install platform runtime directives &amp; components</span>
+<span class="token function">extend</span><span class="token punctuation">(</span>Vue<span class="token punctuation">.</span>options<span class="token punctuation">.</span>directives<span class="token punctuation">,</span> platformDirectives<span class="token punctuation">)</span>
+<span class="token function">extend</span><span class="token punctuation">(</span>Vue<span class="token punctuation">.</span>options<span class="token punctuation">.</span>components<span class="token punctuation">,</span> platformComponents<span class="token punctuation">)</span>
+
+<span class="token comment">// install platform patch function</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>__patch__ <span class="token operator">=</span> inBrowser <span class="token operator">?</span> patch <span class="token operator">:</span> noop
+
+<span class="token comment">// public mount method</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$mount</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>
+  <span class="token parameter">el<span class="token operator">?</span><span class="token operator">:</span> string <span class="token operator">|</span> Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token operator">:</span> boolean</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+  el <span class="token operator">=</span> el <span class="token operator">&amp;&amp;</span> inBrowser <span class="token operator">?</span> <span class="token function">query</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">undefined</span>
+  <span class="token keyword">return</span> <span class="token function">mountComponent</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> el<span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ...</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Vue
+</code></pre></div><p><strong>这里主要就做 3 件事</strong>：</p> <ul><li>覆盖 <code>Vue.config</code>，安装平台特有的一些方法</li> <li>在 <code>Vue.options.directives</code> 和 <code>Vue.options.components</code> 上安装平台特有的指令和组件</li> <li>在 <code>Vue.prototype</code> 上定义 <code>__patch__</code> 和 <code>$mount</code></li></ul> <p><strong>经过这一步之后 Vue 就变成下面这个样子：</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 安装平台特定的 utils</span>
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>mustUseProp <span class="token operator">=</span> mustUseProp
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>isReservedTag <span class="token operator">=</span> isReservedTag
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>isReservedAttr <span class="token operator">=</span> isReservedAttr
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>getTagNamespace <span class="token operator">=</span> getTagNamespace
+Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>isUnknownElement <span class="token operator">=</span> isUnknownElement
+<span class="token comment">// 安装平台特定的指令和组件</span>
+Vue<span class="token punctuation">.</span>options <span class="token operator">=</span> <span class="token punctuation">{</span>
+  components<span class="token operator">:</span> <span class="token punctuation">{</span>
+    KeepAlive<span class="token punctuation">,</span>
+    Transition<span class="token punctuation">,</span>
+    TransitionGroup
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  directives<span class="token operator">:</span> <span class="token punctuation">{</span>
+    model<span class="token punctuation">,</span>
+    show
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  filters<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  _base<span class="token operator">:</span> Vue
+<span class="token punctuation">}</span>
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>__patch__
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$mount
+</code></pre></div><p>注意的是 Vue.options 的变化，另外 <code>$mount</code> 方法很简单</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$mount</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>
+  <span class="token parameter">el<span class="token operator">?</span><span class="token operator">:</span> string <span class="token operator">|</span> Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token operator">:</span> boolean</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+  el <span class="token operator">=</span> el <span class="token operator">&amp;&amp;</span> inBrowser <span class="token operator">?</span> <span class="token function">query</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">undefined</span>
+  <span class="token keyword">return</span> <span class="token function">mountComponent</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> el<span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>首先判断如果 <code>el</code> 存在，而且是浏览器环境则 <code>query(el)</code> 获取元素，然后将 <code>el</code> 传给 <code>mountComponent(this, el, hydrating)</code>。</p> <p>最后就是入口文件了</p> <h3 id="_4-缓存原来的-mount-编译生成-render-函数"><a href="#_4-缓存原来的-mount-编译生成-render-函数" class="header-anchor">#</a> 4. 缓存原来的 $mount，编译生成 render 函数</h3> <p><strong>web/entry-runtime-with-compiler.js</strong></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">/* @flow */</span>
+
+<span class="token keyword">import</span> config <span class="token keyword">from</span> <span class="token string">'core/config'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> warn<span class="token punctuation">,</span> cached <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> mark<span class="token punctuation">,</span> measure <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'core/util/perf'</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'./runtime/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> query <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./util/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> compileToFunctions <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./compiler/index'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> shouldDecodeNewlines<span class="token punctuation">,</span> shouldDecodeNewlinesForHref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./util/compat'</span>
+
+<span class="token keyword">const</span> idToTemplate <span class="token operator">=</span> <span class="token function">cached</span><span class="token punctuation">(</span><span class="token parameter">id</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> el <span class="token operator">=</span> <span class="token function">query</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> el <span class="token operator">&amp;&amp;</span> el<span class="token punctuation">.</span>innerHTML
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> mount <span class="token operator">=</span> <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$mount
+<span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">$mount</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>
+  <span class="token parameter">el<span class="token operator">?</span><span class="token operator">:</span> string <span class="token operator">|</span> Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token operator">:</span> boolean</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> Component <span class="token punctuation">{</span>
+  el <span class="token operator">=</span> el <span class="token operator">&amp;&amp;</span> <span class="token function">query</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span>
+
+  <span class="token comment">/* istanbul ignore if */</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el <span class="token operator">===</span> document<span class="token punctuation">.</span>body <span class="token operator">||</span> el <span class="token operator">===</span> document<span class="token punctuation">.</span>documentElement<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> <span class="token function">warn</span><span class="token punctuation">(</span>
+      <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Do not mount Vue to &lt;html&gt; or &lt;body&gt; - mount to normal elements instead.</span><span class="token template-punctuation string">`</span></span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$options
+  <span class="token comment">// resolve template/el and convert to render function</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>options<span class="token punctuation">.</span>render<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> template <span class="token operator">=</span> options<span class="token punctuation">.</span>template
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>template<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> template <span class="token operator">===</span> <span class="token string">'string'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>template<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'#'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          template <span class="token operator">=</span> <span class="token function">idToTemplate</span><span class="token punctuation">(</span>template<span class="token punctuation">)</span>
+          <span class="token comment">/* istanbul ignore if */</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>template<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">warn</span><span class="token punctuation">(</span>
+              <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Template element not found or is empty: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>options<span class="token punctuation">.</span>template<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+              <span class="token keyword">this</span>
+            <span class="token punctuation">)</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>template<span class="token punctuation">.</span>nodeType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        template <span class="token operator">=</span> template<span class="token punctuation">.</span>innerHTML
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">'invalid template option:'</span> <span class="token operator">+</span> template<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      template <span class="token operator">=</span> <span class="token function">getOuterHTML</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>template<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">/* istanbul ignore if */</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> config<span class="token punctuation">.</span>performance <span class="token operator">&amp;&amp;</span> mark<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">mark</span><span class="token punctuation">(</span><span class="token string">'compile'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">const</span> <span class="token punctuation">{</span> render<span class="token punctuation">,</span> staticRenderFns <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">compileToFunctions</span><span class="token punctuation">(</span>template<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        outputSourceRange<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span><span class="token punctuation">,</span>
+        shouldDecodeNewlines<span class="token punctuation">,</span>
+        shouldDecodeNewlinesForHref<span class="token punctuation">,</span>
+        delimiters<span class="token operator">:</span> options<span class="token punctuation">.</span>delimiters<span class="token punctuation">,</span>
+        comments<span class="token operator">:</span> options<span class="token punctuation">.</span>comments
+      <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+      options<span class="token punctuation">.</span>render <span class="token operator">=</span> render
+      options<span class="token punctuation">.</span>staticRenderFns <span class="token operator">=</span> staticRenderFns
+
+      <span class="token comment">/* istanbul ignore if */</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> config<span class="token punctuation">.</span>performance <span class="token operator">&amp;&amp;</span> mark<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">mark</span><span class="token punctuation">(</span><span class="token string">'compile end'</span><span class="token punctuation">)</span>
+        <span class="token function">measure</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">vue </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>_name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> compile</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> <span class="token string">'compile'</span><span class="token punctuation">,</span> <span class="token string">'compile end'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token function">mount</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> el<span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/**
+ * Get outerHTML of elements, taking care
+ * of SVG elements in IE as well.
+ */</span>
+<span class="token keyword">function</span> <span class="token function">getOuterHTML</span> <span class="token punctuation">(</span><span class="token parameter">el<span class="token operator">:</span> Element</span><span class="token punctuation">)</span><span class="token operator">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>outerHTML<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> el<span class="token punctuation">.</span>outerHTML
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> container <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span>
+    container<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span><span class="token function">cloneNode</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> container<span class="token punctuation">.</span>innerHTML
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+Vue<span class="token punctuation">.</span>compile <span class="token operator">=</span> compileToFunctions
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Vue
+</code></pre></div><p>这里主要做 2 件事</p> <ol><li>缓存 <code>$mount</code> 函数，然后覆盖 <code>Vue.prototype.$mount</code></li></ol> <p>这里的 <code>$mount</code> 比较有意思，它的主要作用有</p> <ul><li>对 <code>el</code> 做限制，Vue 不能挂载在 <code>body</code>、<code>html</code> 这样的根结点。</li> <li>如果没有定义 <code>render</code> 方法，则会把 <code>template</code> 或者 <code>el</code> 转换成 <code>render</code> 函数，它是调用 <code>compileToFunctions</code> 方法实现的</li></ul> <p><strong>在 Vue 2.x 中，所有组件的渲染都需要 <code>render</code> 方法，无论用的是单文件 <code>.vue</code> 的方式，还是写了 <code>el</code> 或者 <code>template</code> 属性，最终都会转换成 <code>render</code> 方法。可以打开你项目中打包之后的 js 文件，每个组件里面都可以找到一个 <code>render</code> 方法。</strong></p> <p>再看看这个入口文件的名称 <code>entry-runtime-with-compiler.js</code>，如果你开始时注意 <code>build/config.js</code>，其实还有其他配置，<strong>也就是 Vue 会分不同版本：runtime-only 和 runtime-compiler</strong>。</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// runtime-only build (Browser)</span>
+  <span class="token string">'web-runtime-dev'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.runtime.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+    env<span class="token operator">:</span> <span class="token string">'development'</span><span class="token punctuation">,</span>
+    banner
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// ...</span>
+  <span class="token comment">// Runtime+compiler development build (Browser)</span>
+  <span class="token string">'web-full-dev'</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    entry<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'web/entry-runtime-with-compiler.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    dest<span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'dist/vue.js'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    format<span class="token operator">:</span> <span class="token string">'umd'</span><span class="token punctuation">,</span>
+    env<span class="token operator">:</span> <span class="token string">'development'</span><span class="token punctuation">,</span>
+    alias<span class="token operator">:</span> <span class="token punctuation">{</span> he<span class="token operator">:</span> <span class="token string">'./entity-decoder'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    banner
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</code></pre></div><p>对比一下：</p> <ul><li>runtime-only</li></ul> <p>项目开发中，一般都是使用 Runtime Only 版本的 Vue.js，这时，通常需要借助如 webpack 的 vue-loader 工具把 <code>.vue</code> 文件编译成 JavaScript，因为是在编译阶段做的，所以它只包含运行时的 Vue.js 代码，因此代码体积也会更轻量。</p> <ul><li>runtime+compiler</li></ul> <p>如果没有对代码做预编译，但又使用了 Vue 的 template 属性并传入一个字符串，则需要在客户端编译模板。因为 Vue 的最终渲染是通过 render 函数的。</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 需要编译器的版本</span>
+<span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  template<span class="token operator">:</span> <span class="token string">'&lt;div&gt;{{ hi }}&lt;/div&gt;'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token comment">// 不需要</span>
+<span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token function">render</span> <span class="token punctuation">(</span><span class="token parameter">h</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>hi<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p>很显然这个编译过程是有一定性能损耗的，所以更推荐使用 runtime-only 的版本。</p> <ol start="2"><li>在 Vue 上挂载了 <code>compile</code></li></ol> <h2 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h2> <p>至此还原了 Vue 构造函数，总结一下：</p> <ol><li>Vue.prototype 下的属性和方法的挂载主要是在 <code>src/core/instance</code> 目录中的代码处理的。</li> <li>Vue 下的静态属性和方法的挂载主要是在 <code>src/core/global-api</code> 目录下的代码处理的。</li> <li><code>web/runtime/index.js</code> 主要是添加 web 平台特有的配置、组件和指令。</li> <li><code>web/web-runtime-with-compiler.js</code> 给Vue的 $mount 方法添加 compiler 编译器，支持 template。</li></ol></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/niexia/learn-source-code/edit/master/docs/vue/instance/Vue是什么.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">3/29/2020, 12:41:55 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/learn-source-code/vue/instance/" class="prev router-link-active">
+        从一个实例开始
+      </a></span> <span class="next"><a href="/learn-source-code/vue/instance/newVue初始化.html">
+        new Vue 初始化
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/learn-source-code/assets/js/app.5e38ded0.js" defer></script><script src="/learn-source-code/assets/js/2.d01425c9.js" defer></script><script src="/learn-source-code/assets/js/13.b32bf10d.js" defer></script><script src="/learn-source-code/assets/js/4.f0684e3b.js" defer></script>
+  </body>
+</html>
