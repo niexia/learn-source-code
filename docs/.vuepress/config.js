@@ -46,74 +46,10 @@ module.exports = {
     ],
     sidebarDepth: 2,
     sidebar: {
-      '/vue/': [{
-        title: "数据驱动",
-        collapsable: false,
-        children: [
-          '/vue/instance/',
-          '/vue/instance/Vue是什么',
-          '/vue/instance/newVue初始化'
-        ]
-      }, {
-        title: "响应式",
-        collapsable: false,
-        children: []
-      }, {
-        title: "虚拟DOM",
-        collapsable: false,
-        children: []
-      }, {
-        title: "模板编译篇",
-        collapsable: false,
-        children: []
-      }, {
-        title: "生命周期篇",
-        collapsable: false,
-        children: []
-      }, {
-        title: "实例方法篇",
-        collapsable: false,
-        children: []
-      }, {
-        title: "全局API篇",
-        collapsable: false,
-        children: []
-      }, {
-        title: "过滤器篇",
-        collapsable: false,
-        children: []
-      }, {
-        title: "指令篇",
-        collapsable: false,
-        children: []
-      }, {
-        title: "内置组件篇",
-        collapsable: false,
-        children: []
-      }],
+      '/vue/': getVueSidebar(),
+      '/vue-next/': getVueNextSidebar(),
+      '/react/': getReactSidebar()
     },
-    '/vue-next/': [{
-      title: '核心实现',
-      collapsable: false,
-      sidebarDepth: 2,
-      children: []
-    }, {
-      title: 'Composition API',
-      collapsable: false,
-      sidebarDepth: 2,
-      children: []
-    }, {
-      title: '优化思想',
-      collapsable: false,
-      sidebarDepth: 2,
-      children: []
-    }, {
-      title: '总结对比',
-      collapsable: false,
-      sidebarDepth: 2,
-      children: []
-    }],
-    '/react/': []
   },
   plugins: [
     ['@vuepress/back-to-top', true],
@@ -128,4 +64,110 @@ module.exports = {
       }
     ]
   ]
+}
+
+function getVueSidebar() {
+  return [{
+    title: "数据驱动",
+    collapsable: false,
+    children: [
+      '/vue/instance/',
+      '/vue/instance/Vue是什么',
+      '/vue/instance/newVue初始化'
+    ]
+  }, {
+    title: "响应式",
+    collapsable: false,
+    children: []
+  }, {
+    title: "虚拟DOM",
+    collapsable: false,
+    children: []
+  }, {
+    title: "模板编译篇",
+    collapsable: false,
+    children: []
+  }, {
+    title: "生命周期篇",
+    collapsable: false,
+    children: []
+  }, {
+    title: "实例方法篇",
+    collapsable: false,
+    children: []
+  }, {
+    title: "全局API篇",
+    collapsable: false,
+    children: []
+  }, {
+    title: "过滤器篇",
+    collapsable: false,
+    children: []
+  }, {
+    title: "指令篇",
+    collapsable: false,
+    children: []
+  }, {
+    title: "内置组件篇",
+    collapsable: false,
+    children: []
+  }];
+}
+
+function getVueNextSidebar() {
+  return [{
+    title: '核心实现',
+    collapsable: false,
+    sidebarDepth: 2,
+    children: []
+  }, {
+    title: 'Composition API',
+    collapsable: false,
+    sidebarDepth: 2,
+    children: []
+  }, {
+    title: '优化思想',
+    collapsable: false,
+    sidebarDepth: 2,
+    children: []
+  }, {
+    title: '总结对比',
+    collapsable: false,
+    sidebarDepth: 2,
+    children: []
+  }]
+}
+
+function getReactSidebar() {
+  return [{
+    title: "开始",
+    collapsable: false,
+    children: [
+      '/react/getting-start/基础',
+    ]
+  }, {
+    title: "组件",
+    collapsable: false,
+    children: [
+      '/react/components/深入了解组件'
+    ]
+  }, {
+    title: "redux",
+    collapsable: false,
+    children: [
+      '/react/redux/深入redux'
+    ]
+  }, {
+    title: "hook",
+    collapsable: false,
+    children: [
+      '/react/hook/hook'
+    ]
+  }, {
+    title: "响应式",
+    collapsable: false,
+    children: [
+      '/react/reactive/响应式'
+    ]
+  }]
 }
