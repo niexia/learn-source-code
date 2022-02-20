@@ -1,7 +1,8 @@
 <template>
-  <p :class="['nx-tip', type]">
-    {{ text }}
-  </p>
+  <div :class="['nx-tip', type]">
+    <p class="tip-text">{{ text }}</p>
+    <p class="tip-sub-text">{{ subText }}</p>
+  </div>
 </template>
 <script>
 export default {
@@ -10,6 +11,10 @@ export default {
     text: {
       type: String,
       required: true,
+      default: '' 
+    },
+    subText: {
+      type: String,
       default: '' 
     },
     type: {
@@ -36,7 +41,7 @@ export default {
   &:before
     content: "?"
     position: absolute
-    top: 14px
+    top: 30px
     left: -12px
     color: #fff
     width: 20px
@@ -52,4 +57,6 @@ export default {
     content: "?"
   &.warning:before
     content: "!"
+  .tip-sub-text
+    color: #476582
 </style>
