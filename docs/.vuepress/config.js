@@ -116,17 +116,19 @@ function getVueSidebar() {
 
 function getVueNextSidebar() {
   return [{
-    title: '核心实现',
+    title: '核心实现和优化',
     collapsable: false,
     sidebarDepth: 2,
-    children: []
+    children: [
+      '/vue-next/core/vnode-to-dom'
+    ]
   }, {
     title: 'Composition API',
     collapsable: false,
     sidebarDepth: 2,
     children: []
   }, {
-    title: '优化思想',
+    title: '常用功能设计',
     collapsable: false,
     sidebarDepth: 2,
     children: []
